@@ -6,6 +6,7 @@ import sys, os, platform
 import json, time
 import subprocess
 
+## chmod git update
 ## tcp server config
 ServerConfig = ('159.8.44.93', 8888)
 ## socket emit timeout
