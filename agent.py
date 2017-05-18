@@ -6,7 +6,7 @@ import json, time
 import subprocess
 
 ## tcp server config
-ServerConfig = ('TCP SERVER IP ADDRESS', 8888)
+ServerConfig = ('159.8.44.93', 8888)
 ## socket emit timeout
 SocketRefreshTime = 2
 
