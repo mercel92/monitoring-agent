@@ -38,7 +38,7 @@ def cleanup():
 
 def detectIp():
     global NodeServerIp
-    fname = './server_ip.txt'
+    fname = '/usr/src/tagent/server_ip.txt'
     try:
         with open(fname) as f:
             NodeServerIp = f.read()
@@ -54,6 +54,8 @@ def main():
 
     detectIp()
     EConfig = NodeServerIp.split(':')
+    if len(EConfig) <1 :
+        print('IP Cozumlenemedi')
     ServerConfig = (EConfig[0],int(EConfig[1]))
     print(ServerConfig)
     connect(ServerConfig)
