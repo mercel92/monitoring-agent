@@ -2,7 +2,7 @@ import signal,time,json,os,subprocess,platform
 
 Timeout = 5
 Running = True
-ServiceAddress = 'http://ns991.tekrom.com:9292/servers'
+ServiceAddress = 'http://srv.tsoft.club/index/update/'
 TriggerFile = './simple.sh'
 
 
@@ -24,7 +24,7 @@ def checkService() :
     global ServiceAddress
     Hostname = platform.uname()[1]
     print(Hostname)
-    r = requests.get(ServiceAddress)
+    r = requests.get(ServiceAddress+Hostname)
     k = r.json()
     print(k);
     print(r.status_code)
