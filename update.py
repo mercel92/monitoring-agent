@@ -1,9 +1,10 @@
-import signal,time,json,os,subprocess
+import signal,time,json,os,subprocess,platform
 
 Timeout = 5
 Running = True
 ServiceAddress = 'http://ns991.tekrom.com:9292/servers'
 TriggerFile = './simple.sh'
+
 
 try:
     import requests
@@ -21,19 +22,24 @@ def executeScript():
 
 def checkService() :
     global ServiceAddress
+    Hostname = platform.uname()[1]
+    print(Hostname)
     r = requests.get(ServiceAddress)
     print(r.status_code)
+
+    return True
 
 def main():
 
     while Running:
 
-        checkService()
-
-        try:
-            executeScript()
-        except:
-            print('Sh is not worked')
+        if (checkService() == True):
+            try:
+                executeScript()
+            except:
+                print('Sh is not worked')
+        else:
+            print('No')
 
         time.sleep(Timeout)
 
