@@ -1,9 +1,11 @@
 import signal,time,json,os,subprocess
+from subprocess import Popen, PIPE
+
 
 Timeout = 5
 Running = True
 ServiceAddress = 'http://ns991.tekrom.com:9292/servers'
-TriggerFile = 'simple.sh'
+TriggerFile = './simple.sh'
 
 try:
     import requests
@@ -15,14 +17,8 @@ def executeScript():
 
     global TriggerFile
     print(TriggerFile)
-    shellscript = subprocess.Popen([TriggerFile], stdin=subprocess.PIPE)
-    shellscript.stdin.write("yes is worked\n")
-    shellscript.stdin.close()
-    returncode = shellscript.wait()  # blocks until shellscript is done
-
-    for line in shellscript.stdout.readlines():
-        print(line)
-
+    subprocess.call([TriggerFile])
+    print('worked')
 
 def main():
     r = requests.get(ServiceAddress)
