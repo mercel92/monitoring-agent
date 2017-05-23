@@ -51,7 +51,6 @@ def detectIp():
 def main():
     global Running
     global SocketRefreshTime
-    global ServerConfig
     global sock
     global ClientIp
 
