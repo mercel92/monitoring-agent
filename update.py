@@ -1,6 +1,6 @@
 import signal,time,json,os,subprocess,platform
 
-Timeout = 5
+Timeout = 10
 Running = True
 ServiceAddress = 'http://srv.tsoft.club/index/update/'
 TriggerFile = './simple.sh'
@@ -21,6 +21,7 @@ def executeScript():
     print('worked')
 
 def checkService() :
+
     global ServiceAddress
     Hostname = platform.uname()[1]
     print(Hostname)
