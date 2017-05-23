@@ -25,11 +25,14 @@ def checkService() :
     Hostname = platform.uname()[1]
     print(Hostname)
     r = requests.get(ServiceAddress+Hostname)
-    k = r.json()
-    print(k);
-    print(r.status_code)
+    try:
+        k = json.loads(r.json())
+        print(k)
 
-    return True
+    except:
+        return False
+
+    return False
 
 def main():
 
