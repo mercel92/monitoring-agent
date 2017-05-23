@@ -3,7 +3,7 @@ import signal,time,json,os,subprocess
 Timeout = 5
 Running = True
 ServiceAddress = 'http://ns991.tekrom.com:9292/servers'
-TriggerFile = ''
+TriggerFile = 'simple.sh'
 
 try:
     import requests
