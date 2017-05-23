@@ -11,6 +11,8 @@ import subprocess
 ServerConfig = ('159.8.44.93', 8888)
 ## socket emit timeout
 SocketRefreshTime = 2
+## client
+ClientIp = ''
 
 try:
     import pip
@@ -37,13 +39,24 @@ def cleanup():
     print ("Cleaning up ...")
 
 
+def detectIp():
+    global ClientIp
+    fname = 'server_ip.txt'
+    try:
+        with open(fname) as f:
+            ClientIp = f.read()
+    except:
+        print('Ip file cannot read')
+
 def main():
     global Running
     global SocketRefreshTime
     global ServerConfig
     global sock
+    global ClientIp
 
     connect(ServerConfig)
+    detectIp()
 
     # dongu patlarsa ?
     signal.signal(signal.SIGTERM, _handle_signal)
@@ -74,7 +87,8 @@ def main():
 
                             "ActiveConnection": ActiveConnection,
                             "BootTime"	: psutil.boot_time(),
-                            "Date"			  : time.time()
+                            "Date"			  : time.time(),
+                            "Ip" : ClientIp,
                         } ,"Os" : {
                             "System" :platform.system(),
                         "Release": platform.release(),
@@ -118,7 +132,7 @@ def main():
         }
 
         message = json.dumps(obj)
-        print (sys.stderr, 'Sending packet..')
+        ##print (sys.stderr, 'Sending packet..')
         try :
             if cur_version >= req_version:
                 print("Python3.x")
