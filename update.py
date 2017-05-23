@@ -24,7 +24,7 @@ def checkService() :
 
     global ServiceAddress
     Hostname = platform.uname()[1]
-    print(Hostname)
+    print(ServiceAddress+Hostname)
     r = requests.get(ServiceAddress+Hostname)
     try:
         k = json.loads(r.json())
