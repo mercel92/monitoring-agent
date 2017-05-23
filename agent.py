@@ -57,7 +57,6 @@ def main():
 
     detectIp()
     ServerConfig = (ClientIp, 8888)
-
     connect(ServerConfig)
 
 
