@@ -55,7 +55,7 @@ def main():
     global NodeServerIp
 
     detectIp()
-    ServerConfig = (NodeServerIp, 8888)
+    ServerConfig = (NodeServerIp.split(':'))
     connect(ServerConfig)
 
 
@@ -88,6 +88,7 @@ def main():
                             "ActiveConnection": ActiveConnection,
                             "BootTime"	: psutil.boot_time(),
                             "Date"			  : time.time(),
+                            "Ip" : socket.gethostbyname(socket.gethostname()),
                         } ,"Os" : {
                             "System" :platform.system(),
                         "Release": platform.release(),
