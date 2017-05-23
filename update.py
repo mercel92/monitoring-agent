@@ -22,7 +22,7 @@ def checkService() :
     r = requests.get(ServiceAddress+Hostname)
     try:
         k = json.loads(r.text)
-        print(k[0].os)
+        print(k[0])
         print(ServiceAddress + Hostname)
     except:
         return False
