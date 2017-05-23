@@ -13,6 +13,8 @@ except ImportError:
 
 def executeScript():
 
+    global TriggerFile
+    print(TriggerFile)
     shellscript = subprocess.Popen([TriggerFile], stdin=subprocess.PIPE)
     shellscript.stdin.write("yes is worked\n")
     shellscript.stdin.close()
