@@ -5,7 +5,7 @@ Running = True
 
 def main():
     while Running:
-        print('test')
+        print('test loop')
         time.sleep(Timeout)
 
 if __name__ == '__main__':
