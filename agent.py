@@ -53,7 +53,8 @@ def main():
     global NodeServerIp
 
     detectIp()
-    ServerConfig = tuple(NodeServerIp.split(':'))
+    EConfig = NodeServerIp.split(':')
+    ServerConfig = (EConfig[0],int(EConfig[1]))
     print(ServerConfig)
     connect(ServerConfig)
 
