@@ -25,6 +25,8 @@ def checkService() :
     Hostname = platform.uname()[1]
     print(Hostname)
     r = requests.get(ServiceAddress)
+    k = r.json()
+    print(k);
     print(r.status_code)
 
     return True
