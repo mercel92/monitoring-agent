@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-#chmod
+#chmod test
 import socket, signal
 import sys, os, platform
 import json, time
