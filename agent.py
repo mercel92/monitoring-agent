@@ -54,6 +54,7 @@ def main():
 
     detectIp()
     ServerConfig = NodeServerIp.split(':')
+    print(ServerConfig)
     connect(ServerConfig)
 
 
