@@ -11,7 +11,7 @@ import subprocess
 ## socket emit timeout
 SocketRefreshTime = 2
 ## client
-ClientIp = ''
+NodeServerIp = ''
 
 try:
     import pip
@@ -39,12 +39,12 @@ def cleanup():
 
 
 def detectIp():
-    global ClientIp
+    global NodeServerIp
     fname = './server_ip.txt'
     try:
         with open(fname) as f:
-            ClientIp = f.read()
-        ClientIp = ClientIp.replace('\n','')
+            NodeServerIp = f.read()
+            NodeServerIp = NodeServerIp.replace('\n','')
     except:
         print('Ip file cannot read')
 
@@ -52,10 +52,10 @@ def main():
     global Running
     global SocketRefreshTime
     global sock
-    global ClientIp
+    global NodeServerIp
 
     detectIp()
-    ServerConfig = (ClientIp, 8888)
+    ServerConfig = (NodeServerIp, 8888)
     connect(ServerConfig)
 
 
