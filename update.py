@@ -22,19 +22,19 @@ def checkService() :
     r = requests.get(ServiceAddress+Hostname)
     try:
         k = json.loads(r.text)
-        print(k[0]['hostname'])
-        print(ServiceAddress + Hostname)
+        if len(k) > 0 and k[0]["update"] == True :
+            return True
     except:
         return False
-    return True
+    return False
 
 def main():
     while Running:
         if (checkService() == True):
             executeScript()
-            print('Sh is not worked')
+            print('Sh is  worked')
         else:
-            print('No')
+            print('Not executed - time ')
         time.sleep(Timeout)
 if __name__ == '__main__':
   main()
