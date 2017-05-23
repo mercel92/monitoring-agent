@@ -1,5 +1,4 @@
 import signal,time,json,os,subprocess,platform, pip
-from bson import json_util
 
 Timeout = 10
 Running = True
@@ -22,7 +21,7 @@ def checkService() :
     Hostname = platform.uname()[1]
     r = requests.get(ServiceAddress+Hostname)
     try:
-        k = json.dumps(r.json(), ensure_ascii=True, default=json_util.default)
+        k = json.loads(r.text)
         print(k)
         print(ServiceAddress + Hostname)
     except:
