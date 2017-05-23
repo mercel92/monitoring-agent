@@ -45,6 +45,7 @@ def detectIp():
     try:
         with open(fname) as f:
             ClientIp = f.read()
+        ClientIp = ClientIp.replace('\n','')
     except:
         print('Ip file cannot read')
 
@@ -74,6 +75,7 @@ def main():
             # pyhton 3.x >
             ActiveConnection = ActiveConnection.decode('utf-8').replace('\n', '')
             php_version = php_version.decode('utf-8')
+            ClientIp = ClientIp.decode('utf-8')
 
         # Send emit
         obj = {
@@ -162,15 +164,15 @@ def connect (opts):
     try :sock.connect(opts)
     except :
         print ('Couldnt connect to server')
-  
-def cpanel() : 
+
+def cpanel() :
 
     try:
         return subprocess.Popen("cat /usr/local/cpanel/version", stdout=subprocess.PIPE).stdout.read().replace('\n' ,'')
     except:
         return ''
 
-def disk() : 
+def disk() :
     disks = []
     for part in psutil.disk_partitions(all=False):
         # windows kurulursa ?
@@ -235,11 +237,11 @@ def scanport(port):
 
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     result = s.connect_ex(('127.0.0.1', port))
- 
+
     if result == 0:
         s.close()
         return True
     return False
-      
+
 if __name__ == '__main__':
   main()
