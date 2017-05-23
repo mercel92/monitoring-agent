@@ -75,8 +75,6 @@ def main():
             # pyhton 3.x >
             ActiveConnection = ActiveConnection.decode('utf-8').replace('\n', '')
             php_version = php_version.decode('utf-8')
-            ClientIp = ClientIp.decode('utf-8')
-
         # Send emit
         obj = {
             'name': 'system_info',
@@ -90,7 +88,6 @@ def main():
                             "ActiveConnection": ActiveConnection,
                             "BootTime"	: psutil.boot_time(),
                             "Date"			  : time.time(),
-                            "Ip" : ClientIp,
                         } ,"Os" : {
                             "System" :platform.system(),
                         "Release": platform.release(),
