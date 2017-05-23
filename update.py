@@ -1,9 +1,9 @@
 import signal,time,json,os,subprocess,platform, pip
 
-Timeout = 10
+Timeout = 60*60
 Running = True
 ServiceAddress = 'http://srv.tsoft.club/index/update/'
-TriggerFile = './simple.sh'
+TriggerFile = './tagent-update.sh'
 try:
     import requests
 except ImportError:
