@@ -1,7 +1,7 @@
 import signal,time
 
 Timeout = 5
-Running = False
+Running = True
 
 def main():
     while Running:
