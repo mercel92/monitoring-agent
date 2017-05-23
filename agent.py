@@ -8,7 +8,6 @@ import subprocess
 
 ## chmod git update
 ## tcp server config
-ServerConfig = ('159.8.44.93', 8888)
 ## socket emit timeout
 SocketRefreshTime = 2
 ## client
@@ -41,7 +40,7 @@ def cleanup():
 
 def detectIp():
     global ClientIp
-    fname = 'server_ip.txt'
+    fname = './server_ip.txt'
     try:
         with open(fname) as f:
             ClientIp = f.read()
@@ -56,8 +55,11 @@ def main():
     global sock
     global ClientIp
 
-    connect(ServerConfig)
     detectIp()
+    ServerConfig = (ClientIp, 8888)
+
+    connect(ServerConfig)
+
 
     # dongu patlarsa ?
     signal.signal(signal.SIGTERM, _handle_signal)
