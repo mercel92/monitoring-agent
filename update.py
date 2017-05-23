@@ -20,11 +20,11 @@ def executeScript():
 def checkService() :
     global ServiceAddress
     Hostname = platform.uname()[1]
-    print(ServiceAddress+Hostname)
     r = requests.get(ServiceAddress+Hostname)
     try:
         k = json.dumps(r.json(), ensure_ascii=True, default=json_util.default)
         print(k)
+        print(ServiceAddress + Hostname)
     except:
         return False
     return True
