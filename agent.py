@@ -6,8 +6,6 @@ import sys, os, platform
 import json, time
 import subprocess
 
-## chmod git update
-## tcp server config
 ## socket emit timeout
 SocketRefreshTime = 2
 ## client
