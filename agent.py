@@ -182,7 +182,9 @@ def disk() :
                 continue
         usage = psutil.disk_usage(part.mountpoint)
         if len(part.mountpoint) > 25:
-            break;
+            break
+        if part.mountpoint.find("home/virtfs") != -1:
+            break
         obj = {
             "Device"  : part.device,
             "Mount"   : part.mountpoint,
