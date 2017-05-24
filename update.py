@@ -30,11 +30,13 @@ def checkService() :
 
 def main():
     while Running:
+        time.sleep(Timeout)
         if (checkService() == True):
             executeScript()
-            print('Sh is  worked')
+            print('Sh is  worked update is stopped')
+            break
         else:
             print('Not executed - time ')
-        time.sleep(Timeout)
+
 if __name__ == '__main__':
   main()
