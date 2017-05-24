@@ -1,5 +1,5 @@
 import signal,time,json,os,subprocess,platform, pip
-
+##test##test
 Timeout = 60*1
 Running = True
 ServiceAddress = 'http://srv.tsoft.club/index/update/'
