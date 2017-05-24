@@ -188,7 +188,7 @@ def disk() :
             "Free" 	  : usage.free,
             "Used"	  :usage.used,
             "Percent" :usage.percent
-        }
+        } ##
         disks.append(obj)
 
     return disks
