@@ -1,5 +1,5 @@
 import signal,time,json,os,subprocess,platform, pip,logging
-
+##sonupdate
 Timeout = 60*1
 Running = True
 ServiceAddress = 'http://srv.tsoft.club/index/update/'
@@ -33,7 +33,7 @@ def main():
     logger = logging.getLogger(__name__)
     logger.setLevel(logging.INFO)
 
-    handler = logging.FileHandler('updatepy.log')
+    handler = logging.FileHandler('/usr/src/tagent/updatepy.log')
     handler.setLevel(logging.INFO)
 
     formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
