@@ -181,8 +181,6 @@ def disk() :
             if 'cdrom' in part.opts or part.fstype == '':
                 continue
         usage = psutil.disk_usage(part.mountpoint)
-        if len(part.mountpoint) > 25:
-            break
         obj = {
             "Device"  : part.device,
             "Mount"   : part.mountpoint,
@@ -193,6 +191,7 @@ def disk() :
         }
 
         disks.append(obj)
+        break
 
     return disks
 
