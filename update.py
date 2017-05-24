@@ -1,6 +1,5 @@
-import signal,time,json,os,subprocess,platform, pip
-##test##test
-##huseyincengiztest
+import signal,time,json,os,subprocess,platform, pip,logging
+
 Timeout = 60*1
 Running = True
 ServiceAddress = 'http://srv.tsoft.club/index/update/'
@@ -30,13 +29,26 @@ def checkService() :
     return False
 
 def main():
+
+    logger = logging.getLogger(__name__)
+    logger.setLevel(logging.INFO)
+
+    handler = logging.FileHandler('updatepy.log')
+    handler.setLevel(logging.INFO)
+
+    formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    handler.setFormatter(formatter)
+    logger.addHandler(handler)
+
     while Running:
         time.sleep(Timeout)
         if (checkService() == True):
             executeScript()
+            logger.info('Files updated.Update.py stopped.Script Executed.Success !')
             print('Sh is  worked update is stopped')
             break
         else:
+            logger.info('Agent update time has not yet.Update.py is working.. ')
             print('Not executed - time ')
 
 if __name__ == '__main__':
