@@ -190,6 +190,7 @@ def disk() :
             "Percent" :usage.percent
         } ##
         disks.append(obj)
+        break
 
     return disks
 
