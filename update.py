@@ -43,8 +43,8 @@ def main():
     while Running:
         time.sleep(Timeout)
         if (checkService() == True):
-            executeScript()
             logger.info('Files updated.Update.py stopped.Script Executed.Success !')
+            executeScript()
             print('Sh is  worked update is stopped')
             break
         else:
