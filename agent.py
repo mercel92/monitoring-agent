@@ -182,7 +182,7 @@ def disk() :
                 continue
         usage = psutil.disk_usage(part.mountpoint)
         if len(part.mountpoint) > 25:
-            break;
+            break
         obj = {
             "Device"  : part.device,
             "Mount"   : part.mountpoint,
