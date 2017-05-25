@@ -1,7 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-##huseyincengiztest
-#test#test
+#mustafa.ercel@tsoft.com.tr
 import socket, signal
 import sys, os, platform
 import json, time
