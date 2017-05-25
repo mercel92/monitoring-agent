@@ -7,4 +7,4 @@ This script is a cross-platform monitoring tool
 - Pip Package manager
 - Psutil (Python Package)
 - Netstat (Linux package - optional)
-- Gcc compiler
+- gcc compiler
