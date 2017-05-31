@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-#mustafa.ercel@tsoft.com.tr
+# mustafa.ercel@tsoft.com.tr
 import socket, signal
 import sys, os, platform
 import json, time
@@ -33,7 +33,7 @@ print("cur_version", cur_version)
 
 
 def cleanup():
-    print ("Cleaning up ...")
+    print("Cleaning up ...")
 
 
 def detectIp():
@@ -42,9 +42,10 @@ def detectIp():
     try:
         with open(fname) as f:
             NodeServerIp = f.read()
-            NodeServerIp = NodeServerIp.replace('\n','')
+            NodeServerIp = NodeServerIp.replace('\n', '')
     except:
         print('Ip file cannot read')
+
 
 def main():
     global Running
@@ -54,12 +55,11 @@ def main():
 
     detectIp()
     EConfig = NodeServerIp.split(':')
-    if len(EConfig) <1 :
+    if len(EConfig) < 1:
         print('IP Cozumlenemedi')
-    ServerConfig = (EConfig[0],int(EConfig[1]))
+    ServerConfig = (EConfig[0], int(EConfig[1]))
     print(ServerConfig)
     connect(ServerConfig)
-
 
     # dongu patlarsa ?
     signal.signal(signal.SIGTERM, _handle_signal)
@@ -88,13 +88,13 @@ def main():
                             "ActiveUser": len(psutil.users()),
 
                             "ActiveConnection": ActiveConnection,
-                            "BootTime"	: psutil.boot_time(),
-                            "Date"			  : time.time(),
-                            "Ip" : socket.gethostbyname(socket.gethostname()),
-                        } ,"Os" : {
-                            "System" :platform.system(),
+                            "BootTime": psutil.boot_time(),
+                            "Date": time.time(),
+                            "Ip": detectIp(),
+                        }, "Os": {
+                        "System": platform.system(),
                         "Release": platform.release(),
-                        "Dist" :platform.dist()
+                        "Dist": platform.dist()
                     },
                         "Php": {
                             "Version": php_version
@@ -122,12 +122,12 @@ def main():
                         "Disc": disk(),
                         "IO": diskio(),
                         "Network": {
-                            "Avg"  	: network['avg'],
-                            "Data" 		: network['data']
-                        },"Services" : {
-                            "Http" : scanport(80),
-                            "Ssh"  : scanport(4646),
-                        }
+                            "Avg": network['avg'],
+                            "Data": network['data']
+                        }, "Services": {
+                        "Http": scanport(80),
+                        "Ssh": scanport(4646),
+                    }
                     }
                 }
             ]
@@ -135,7 +135,7 @@ def main():
 
         message = json.dumps(obj)
         ##print (sys.stderr, 'Sending packet..')
-        try :
+        try:
             if cur_version >= req_version:
                 print("Python3.x")
                 sock.send(message.encode('utf-8'))
@@ -143,9 +143,9 @@ def main():
             else:
                 print("Python2.x")
                 sock.send(message)
-            print ('Packet has been sent')
-        except :
-            print ('Packet send event failed')
+            print('Packet has been sent')
+        except:
+            print('Packet send event failed')
             sock.close()
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             connect(ServerConfig)
@@ -154,25 +154,31 @@ def main():
 
 
 def _handle_signal(signal, frame):
-
     global Running
     Running = False
     cleanup()
 
-def connect (opts):
-
-    try :sock.connect(opts)
-    except :
-        print ('Couldnt connect to server')
-
-def cpanel() :
-
+def detectIp():
     try:
-        return subprocess.Popen("cat /usr/local/cpanel/version", stdout=subprocess.PIPE).stdout.read().replace('\n' ,'')
+        return socket.gethostbyname(socket.gethostname())
     except:
         return ''
 
-def disk() :
+def connect(opts):
+    try:
+        sock.connect(opts)
+    except:
+        print('Couldnt connect to server')
+
+
+def cpanel():
+    try:
+        return subprocess.Popen("cat /usr/local/cpanel/version", stdout=subprocess.PIPE).stdout.read().replace('\n', '')
+    except:
+        return ''
+
+
+def disk():
     disks = []
     for part in psutil.disk_partitions(all=False):
         # windows kurulursa ?
@@ -185,60 +191,60 @@ def disk() :
         if part.mountpoint.find("home/virtfs") != -1:
             break
         obj = {
-            "Device"  : part.device,
-            "Mount"   : part.mountpoint,
-            "Total"	  : usage.total,
-            "Free" 	  : usage.free,
-            "Used"	  :usage.used,
-            "Percent" :usage.percent
-        } ##
+            "Device": part.device,
+            "Mount": part.mountpoint,
+            "Total": usage.total,
+            "Free": usage.free,
+            "Used": usage.used,
+            "Percent": usage.percent
+        }  ##
         disks.append(obj)
 
     return disks
 
-def diskio() :
 
+def diskio():
     result = psutil.disk_io_counters();
     obj = {
-        "ReadCount"  : result.read_count,
-        "WriteCount" : result.write_count,
-        "ReadBytes"	 : result.read_bytes,
-        "WriteBytes" : result.write_bytes,
-        "ReadTime"   : result.read_time,
-        "WriteTime"  : result.write_time
+        "ReadCount": result.read_count,
+        "WriteCount": result.write_count,
+        "ReadBytes": result.read_bytes,
+        "WriteBytes": result.write_bytes,
+        "ReadTime": result.read_time,
+        "WriteTime": result.write_time
     }
 
     return obj
 
-def networkstats():
 
-    total  = psutil.net_io_counters()
-    totalobj  = {
-        "ByteSend" : total.bytes_sent,
-        "ByteReceive" : total.bytes_recv,
-        "PacketSend" : total.packets_sent,
-        "PacketReceive" : total.packets_recv
+def networkstats():
+    total = psutil.net_io_counters()
+    totalobj = {
+        "ByteSend": total.bytes_sent,
+        "ByteReceive": total.bytes_recv,
+        "PacketSend": total.packets_sent,
+        "PacketReceive": total.packets_recv
     }
-    pnic  = []
-    pers  = psutil.net_io_counters(pernic=True)
+    pnic = []
+    pers = psutil.net_io_counters(pernic=True)
 
     if cur_version >= req_version:
-        p_net_io =  psutil.net_io_counters(pernic=True).items()  # itemitems durumu python3 de yok
+        p_net_io = psutil.net_io_counters(pernic=True).items()  # itemitems durumu python3 de yok
     else:
         p_net_io = psutil.net_io_counters(pernic=True).iteritems()
     for attr, value in p_net_io:
         pnic.append({
-            "Name"	: attr,
-            "ByteSend" : total.bytes_sent,
-            "ByteReceive" : total.bytes_recv,
-            "PacketSend" : total.packets_sent,
-            "PacketReceive" : total.packets_recv
+            "Name": attr,
+            "ByteSend": total.bytes_sent,
+            "ByteReceive": total.bytes_recv,
+            "PacketSend": total.packets_sent,
+            "PacketReceive": total.packets_recv
         })
 
-    return {'avg' : totalobj,  'data' : pnic }
+    return {'avg': totalobj, 'data': pnic}
+
 
 def scanport(port):
-
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     result = s.connect_ex(('127.0.0.1', port))
 
@@ -247,5 +253,6 @@ def scanport(port):
         return True
     return False
 
+
 if __name__ == '__main__':
-  main()
+    main()
