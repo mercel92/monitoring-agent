@@ -90,7 +90,7 @@ def main():
                             "ActiveConnection": ActiveConnection,
                             "BootTime": psutil.boot_time(),
                             "Date": time.time(),
-                            "Ip": detectIp(),
+                            "Ip": detectIpAddr(),
                         }, "Os": {
                         "System": platform.system(),
                         "Release": platform.release(),
@@ -158,7 +158,7 @@ def _handle_signal(signal, frame):
     Running = False
     cleanup()
 
-def detectIp():
+def detectIpAddr():
     try:
         return socket.gethostbyname(socket.gethostname())
     except:
