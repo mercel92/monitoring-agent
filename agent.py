@@ -106,8 +106,8 @@ def main():
                         },
                         "LiteSpeed" : {
                             "Version": shellexec(['cat', '/usr/local/lsws/VERSION']),
-                            "Serial" : shellexec(['cat', '/usr/local/lsws/bin/lshttpd -V']),
-                            "Expdate": shellexec(['cat', '/usr/local/lsws/conf/serial.no'])
+                            "Serial" : shellexec(['cat', '/usr/local/lsws/conf/serial.no']),
+                            "Expdate": shellexec(['/usr/local/lsws/bin/lshttpd -V'])
                         },
                         "Cpu": {
                             "Avg": psutil.cpu_percent(interval=1),
