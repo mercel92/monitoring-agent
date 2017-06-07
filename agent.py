@@ -102,12 +102,12 @@ def main():
                             "Version": php_version
                         },
                         "Cpanel": {
-                            "Version": shellexec(['cat','/usr/local/cpanel/version'])
+                            "Version": shellexec(['cat','/usr/local/cpanel/version'],False)
                         },
                         "LiteSpeed" : {
-                            "Version": shellexec(['cat', '/usr/local/lsws/VERSION']),
-                            "Serial" : shellexec(['cat', '/usr/local/lsws/conf/serial.no']),
-                            "Expdate": shellexec(['/usr/local/lsws/bin/lshttpd -V'])
+                            "Version": shellexec(['cat', '/usr/local/lsws/VERSION'],False),
+                            "Serial" : shellexec(['cat', '/usr/local/lsws/conf/serial.no'],False),
+                            "Expdate": shellexec('/usr/local/lsws/bin/lshttpd -V | grep -m 1 "Leased"',True)
                         },
                         "Cpu": {
                             "Avg": psutil.cpu_percent(interval=1),
@@ -178,10 +178,12 @@ def connect(opts):
         print('Couldnt connect to server')
 
 
-def shellexec(args):
+def shellexec(args,shell):
     try:
-        proc = Popen(args, stdout=PIPE)
-        return (proc.communicate()[0].split())
+        proc = Popen(args, stdout=PIPE , shell = shell)
+        if shell == False :
+            return (proc.communicate()[0].split())
+        return (proc.communicate()[0])
     except:
         return ''
 
