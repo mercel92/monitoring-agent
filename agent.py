@@ -5,9 +5,11 @@ import socket, signal
 import sys, os, platform
 import json, time
 import subprocess
+from subprocess import PIPE,Popen
+
 
 ## socket emit timeout
-SocketRefreshTime = 2
+SocketRefreshTime = 4
 ## client
 NodeServerIp = ''
 
@@ -100,7 +102,12 @@ def main():
                             "Version": php_version
                         },
                         "Cpanel": {
-                            "Version": cpanel()
+                            "Version": shellexec(['cat','/usr/local/cpanel/version'])
+                        },
+                        "LiteSpeed" : {
+                            "Version": shellexec(['cat', '/usr/local/lsws/VERSION']),
+                            "Serial" : shellexec(['cat', '/usr/local/lsws/bin/lshttpd -V']),
+                            "Expdate": shellexec(['cat', '/usr/local/lsws/conf/serial.no'])
                         },
                         "Cpu": {
                             "Avg": psutil.cpu_percent(interval=1),
@@ -171,12 +178,12 @@ def connect(opts):
         print('Couldnt connect to server')
 
 
-def cpanel():
+def shellexec(args):
     try:
-        return subprocess.Popen("cat /usr/local/cpanel/version", stdout=subprocess.PIPE).stdout.read().replace('\n', '')
+        proc = Popen(args, stdout=PIPE)
+        return (proc.communicate()[0].split())
     except:
         return ''
-
 
 def disk():
     disks = []
