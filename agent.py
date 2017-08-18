@@ -2,14 +2,14 @@
 # -*- coding: utf-8 -*-
 # mustafa.ercel@tsoft.com.tr
 import socket, signal
-import sys, os, platform
+import sys, os, platform, re
 import json, time
+import calendar, datetime, sqlite3
 import subprocess
-from subprocess import PIPE,Popen
-
+from subprocess import PIPE, Popen
 
 ## socket emit timeout
-SocketRefreshTime = 4
+SocketRefreshTime = 5
 ## client
 NodeServerIp = ''
 
@@ -56,11 +56,12 @@ def main():
     global NodeServerIp
 
     detectIp()
+
     EConfig = NodeServerIp.split(':')
     if len(EConfig) < 1:
         print('IP Cozumlenemedi')
+
     ServerConfig = (EConfig[0], int(EConfig[1]))
-    print(ServerConfig)
     connect(ServerConfig)
 
     # dongu patlarsa ?
@@ -68,18 +69,20 @@ def main():
     signal.signal(signal.SIGINT, _handle_signal)
 
     while Running:
+
         memory = psutil.virtual_memory()
         swap = psutil.swap_memory()
         network = networkstats()
-        ActiveConnection = (subprocess.Popen("netstat -tuwanp | awk '{print $4}' | sort | uniq -c | wc -l",
-                                             shell=True,
+        ActiveConnection = (subprocess.Popen("netstat -tuwanp | awk '{print $4}' | sort | uniq -c | wc -l", shell=True,
                                              stdout=subprocess.PIPE).stdout.read())
         php_version = (subprocess.Popen("php -v", shell=True, stdout=subprocess.PIPE).stdout.read()[:30])
+
         if cur_version >= req_version:
             # pyhton 3.x >
             ActiveConnection = ActiveConnection.decode('utf-8').replace('\n', '')
             php_version = php_version.decode('utf-8')
         # Send emit
+
         obj = {
             'name': 'system_info',
             'args': [
@@ -93,21 +96,22 @@ def main():
                             "BootTime": psutil.boot_time(),
                             "Date": time.time(),
                             "Ip": detectIpAddr(),
-                        }, "Os": {
-                        "System": platform.system(),
-                        "Release": platform.release(),
-                        "Dist": platform.dist()
-                    },
+                        },
+                        "Os": {
+                            "System": platform.system(),
+                            "Release": platform.release(),
+                            "Dist": platform.dist()
+                        },
                         "Php": {
                             "Version": php_version
                         },
                         "Cpanel": {
-                            "Version": shellexec(['cat','/usr/local/cpanel/version'],False)
+                            "Version": shellexec(['cat', '/usr/local/cpanel/version'], False)
                         },
-                        "LiteSpeed" : {
-                            "Version": shellexec(['cat', '/usr/local/lsws/VERSION'],False),
-                            "Serial" : shellexec(['cat', '/usr/local/lsws/conf/serial.no'],False),
-                            "Expdate": shellexec('/usr/local/lsws/bin/lshttpd -V | grep -m 1 "Leased"',True)
+                        "LiteSpeed": {
+                            "Version": shellexec(['cat', '/usr/local/lsws/VERSION'], False),
+                            "Serial": shellexec(['cat', '/usr/local/lsws/conf/serial.no'], False),
+                            "Expdate": shellexec('/usr/local/lsws/bin/lshttpd -V | grep -m 1 "Leased"', True)
                         },
                         "Cpu": {
                             "Avg": psutil.cpu_percent(interval=1),
@@ -140,6 +144,7 @@ def main():
             ]
         }
 
+        obj['args'].append({'data': getDomainFromCpanel()});
         message = json.dumps(obj)
         ##print (sys.stderr, 'Sending packet..')
         try:
@@ -165,11 +170,13 @@ def _handle_signal(signal, frame):
     Running = False
     cleanup()
 
+
 def detectIpAddr():
     try:
         return socket.gethostbyname(socket.gethostname())
     except:
         return ''
+
 
 def connect(opts):
     try:
@@ -178,14 +185,15 @@ def connect(opts):
         print('Couldnt connect to server')
 
 
-def shellexec(args,shell):
+def shellexec(args, shell):
     try:
-        proc = Popen(args, stdout=PIPE , shell = shell)
-        if shell == False :
+        proc = Popen(args, stdout=PIPE, shell=shell)
+        if shell == False:
             return (proc.communicate()[0].split())
         return (proc.communicate()[0])
     except:
         return ''
+
 
 def disk():
     disks = []
@@ -261,6 +269,59 @@ def scanport(port):
         s.close()
         return True
     return False
+
+
+def getDomainFromCpanel():
+    file = '/etc/trueuserdomains'
+    if (os.path.exists(file) == True):
+        fileObj = open(file, 'r')
+        sites = fileObj.readlines()
+        siteList = []
+        for index, site in enumerate(sites):
+            site = site.replace(' ', '').replace('\n', '')
+            pos = site.find(':')
+            siteList.append({'domain': site[:pos], 'username': site[pos:].replace(':', '')})
+        return siteList
+    return False
+
+
+def getMailCount():
+    logList = []
+    file = '/var/log/exim_mainlog'
+    if (os.path.exists(file) == True):
+        logs = subprocess.Popen(
+            "grep 'cwd=/home' /var/log/exim_mainlog | awk ' {print $3} ' | cut -d / -f 3 | sort -bg | uniq -c | sort -bg",
+            shell=True, stdout=subprocess.PIPE).stdout.readlines()
+        for index, log in enumerate(logs):
+            log = log.strip().replace('\n', '')
+            regexObj = re.search('\d+ {1}[A-Za-z0-9]{1}', log)
+            pos = regexObj.end() - 1
+            logList.append({'username': log[pos:], 'count': int(log[:pos])})
+        return logList
+    return False
+
+
+def getBandwithFromDomain(user):
+    now = datetime.datetime.now()
+    monthRanges = calendar.monthrange(now.year, now.month)
+    s1 = str(monthRanges[0]) + '/' + str(now.month) + '/' + str(now.year)
+    timestamp = time.mktime(datetime.datetime.strptime(s1, "%d/%m/%Y").timetuple())
+
+    bandwidth = 0
+    file = '/var/cpanel/bandwidth/' + user + '.sqlite'
+
+    if (os.path.exists(file) == False):
+        return False
+
+    conn = sqlite3.connect(file)
+    c = conn.cursor()
+
+    sqlQuery = 'SELECT SUM(bytes) AS sum  FROM \'bandwidth_5min\' WHERE unixtime >' + str(timestamp)
+    c.execute(sqlQuery)
+    bandwidth = c.fetchone()[0]
+    conn.close()
+
+    return bandwidth;
 
 
 if __name__ == '__main__':
