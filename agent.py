@@ -144,7 +144,7 @@ def main():
             ]
         }
 
-        # once a hour
+        # once a hour  test
         currentHour = datetime.datetime.now().hour
         if(hour == False or currentHour != hour):
             hour = currentHour
