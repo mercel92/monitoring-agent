@@ -68,6 +68,8 @@ def main():
     signal.signal(signal.SIGTERM, _handle_signal)
     signal.signal(signal.SIGINT, _handle_signal)
 
+    hour = False
+
     while Running:
 
         memory = psutil.virtual_memory()
@@ -144,7 +146,12 @@ def main():
             ]
         }
 
-        obj['args'].append({'data': getCpanelInfo()});
+        # once a hour
+        currentHour = datetime.datetime.now().hour
+        if(hour == False or currentHour != hour):
+            hour = currentHour
+            obj['args'].append({'data': getCpanelInfo()})
+
         message = json.dumps(obj)
         ##print (sys.stderr, 'Sending packet..')
         try:
