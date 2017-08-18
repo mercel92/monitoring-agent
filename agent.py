@@ -144,7 +144,7 @@ def main():
             ]
         }
 
-        obj['args'].append({'data': getDomainFromCpanel()});
+        obj['args'].append({'data': getCpanelInfo()});
         message = json.dumps(obj)
         ##print (sys.stderr, 'Sending packet..')
         try:
@@ -271,7 +271,7 @@ def scanport(port):
     return False
 
 
-def getDomainFromCpanel():
+def getCpanelInfo():
     file = '/etc/trueuserdomains'
     if (os.path.exists(file) == True):
         fileObj = open(file, 'r')
@@ -280,7 +280,13 @@ def getDomainFromCpanel():
         for index, site in enumerate(sites):
             site = site.replace(' ', '').replace('\n', '')
             pos = site.find(':')
-            siteList.append({'domain': site[:pos], 'username': site[pos:].replace(':', '')})
+            username  = site[pos:].replace(':', '')
+            bandwidth = getBandwithFromDomain(username)
+
+            if(bandwidth == False):
+                bandwidth = -1;
+
+            siteList.append({'domain': site[:pos], 'username': username, 'bandwidth' : bandwidth})
         return siteList
     return False
 
