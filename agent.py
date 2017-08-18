@@ -149,6 +149,7 @@ def main():
         # once a hour
         currentHour = datetime.datetime.now().hour
         if(hour == False or currentHour != hour):
+            print('test')
             hour = currentHour
             obj['args'].append({'data': getCpanelInfo()})
 
