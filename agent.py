@@ -342,7 +342,7 @@ def getBandwithFromDomain(user):
 
 def getQuotaInfoFromDomain(user):
 
-    result = subprocess.Popen("quota -u"+user+" | grep -Eo '[0-9]{6,10}'",shell = True,stdout = subprocess.PIPE).stdout.readlines()
+    result = subprocess.Popen("quota -u "+user+" | grep -Eo '[0-9]{6,10}'",shell = True,stdout = subprocess.PIPE).stdout.readlines()
     response = {}
     if(len(result) > 0) :
         response['space'] = result[0].replace('\n','')
