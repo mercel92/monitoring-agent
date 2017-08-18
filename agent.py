@@ -277,21 +277,27 @@ def scanport(port):
 
 
 def getCpanelInfo():
+
     file = '/etc/trueuserdomains'
     if (os.path.exists(file) == True):
         fileObj = open(file, 'r')
         sites = fileObj.readlines()
         siteList = []
+
         for index, site in enumerate(sites):
             site = site.replace(' ', '').replace('\n', '')
             pos = site.find(':')
             username  = site[pos:].replace(':', '')
             bandwidth = getBandwithFromDomain(username)
+            quota     = getQuotaInfoFromDomain(username)
 
             if(bandwidth == False):
                 bandwidth = -1;
 
-            siteList.append({'domain': site[:pos], 'username': username, 'bandwidth' : bandwidth})
+            if(quota == False):
+                quota = { 'space' : '0' , 'limit' : '0'}
+
+            siteList.append({'domain': site[:pos], 'username': username, 'bandwidth' : bandwidth, 'quota' : quota})
         return siteList
     return False
 
@@ -333,6 +339,16 @@ def getBandwithFromDomain(user):
     conn.close()
 
     return bandwidth;
+
+def getQuotaInfoFromDomain(user):
+
+    result = subprocess.Popen("quota -u"+user+" | grep -Eo '[0-9]{6,10}'",shell = True,stdout = subprocess.PIPE).stdout.readlines()
+    response = {}
+    if(len(result) > 0) :
+        response['space'] = result[0].replace('\n','')
+        response['total'] = result[1].replace('\n','')
+        return response
+    return False
 
 
 if __name__ == '__main__':
