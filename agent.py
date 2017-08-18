@@ -31,8 +31,6 @@ Running = True
 req_version = (2, 8)  # Kıyaslayacağımız python versiyon
 cur_version = sys.version_info[:2]  # Kullanılan python versiyonu
 
-print("cur_version", cur_version)
-
 
 def cleanup():
     print("Cleaning up ...")
@@ -149,7 +147,6 @@ def main():
         # once a hour
         currentHour = datetime.datetime.now().hour
         if(hour == False or currentHour != hour):
-            print('test')
             hour = currentHour
             obj['args'].append({'data': getCpanelInfo()})
 
