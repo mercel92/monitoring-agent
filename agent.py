@@ -348,7 +348,7 @@ def getQuotaInfoFromDomain(user):
     if(len(result) > 0) :
         response['space'] = result[0].replace('\n','')
         response['total'] = result[1].replace('\n','')
-        print(response)
+
         return response
     return False
 
