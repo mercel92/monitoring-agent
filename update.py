@@ -2,7 +2,7 @@ import signal,time,json,os,subprocess,platform, pip,logging
 ##sonupdate
 Timeout = 60*60
 Running = True
-ServiceAddress = 'http://srv.tsoft.club/index/update/'
+ServiceAddress = 'http://rink.monitorink.com/index/update/'
 TriggerFile = '/usr/src/tagent/tagent-update.sh'
 try:
     import requests
