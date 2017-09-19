@@ -5,33 +5,38 @@ class Network:
 
     avg  = 0
     data = {}
-    pnic = []
+
+    def __init__(self):
+        self.data = psutil.net_io_counters()
 
     def stats(self):
 
-        totalData = psutil.net_io_counters()
         total = {}
-        total['ByteSend'] = totalData.bytes_sent
-        total['ByteReceive'] = totalData.bytes_recv
-        total['PacketSend'] = totalData.packets_sent
-        total['PacketReceive'] = totalData.packets_recv
+        total['ByteSend']       = self.data.bytes_sent
+        total['ByteReceive']    = self.data.bytes_recv
+        total['PacketSend']     = self.data.packets_sent
+        total['PacketReceive']  = self.data.packets_recv
 
         if self.isV3() == True :
             p_net_io = psutil.net_io_counters(pernic=True).items()
         else:
             p_net_io = psutil.net_io_counters(pernic=True).iteritems()
 
-        for attr, value in p_net_io:
+        parts = self.getPartitionStats(p_net_io)
+        return {'avg': total, 'data': parts}
 
-            self.pnic.append({
+    def getPartitionStats(self,data):
+
+        pnic = []
+        for attr, value in data:
+            pnic.append({
                 "Name": attr,
-                "ByteSend": totalData.bytes_sent,
-                "ByteReceive": totalData.bytes_recv,
-                "PacketSend": totalData.packets_sent,
-                "PacketReceive": totalData.packets_recv
+                "ByteSend":0,
+                "ByteReceive": 0,
+                "PacketSend": 0,
+                "PacketReceive": 0
             })
-
-        return {'avg': total, 'data': self.pnic}
+        return pnic
 
     def isV3(self):
 
