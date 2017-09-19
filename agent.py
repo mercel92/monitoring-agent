@@ -69,12 +69,10 @@ def main():
         message = json.dumps(obj)
         try:
             if service.isV3():
-                print("Python3.x")
                 sock.send(message.encode('utf-8'))
-
             else:
-                print("Python2.x")
                 sock.send(message)
+
             print('Packet has been sent')
 
         except:
@@ -84,9 +82,6 @@ def main():
             connect(serverConfig)
 
         time.sleep(timeout)
-
-    data = service.load()
-    print(data)
 
 def _handle_signal(signal, frame):
     global Running
