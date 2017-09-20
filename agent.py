@@ -7,7 +7,7 @@
  * 
  * 
  * @author      Mustafa ERÇEL  <mustafa.ercel@tsoft.com.tr>
- * @copyright   Tekrom Teknoloji A.Ş.
+ * @copyright   Tekrom Teknoloji A.S.
  * @version     1.0
  * @since       Python 2.8
 
