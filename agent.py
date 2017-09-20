@@ -6,7 +6,7 @@
  * monitorink.com
  * 
  * 
- * @author      Mustafa ERÇEL  <mustafa.ercel@tsoft.com.tr>
+ * @author      Mustafa ERCEL  <mustafa.ercel@tsoft.com.tr>
  * @copyright   Tekrom Teknoloji A.S.
  * @version     1.0
  * @since       Python 2.8
