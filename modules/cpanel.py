@@ -45,8 +45,7 @@ class Cpanel:
 
             if (quota == False):
                 quota = {'space': '0', 'limit': '0'}
-            print(siteList)
-            siteList.append({'domain': site[:pos], 'username': username, 'bandwidth': bandwidth, 'quota': quota})
+            siteList.append({'domain': site[:pos], 'username': username, 'bandwidth': bandwidth, 'disc': quota})
 
         return siteList
 
