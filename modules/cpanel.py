@@ -9,7 +9,7 @@ class Cpanel:
     ######
     ##
     ##  Cpaneldeki domainleri tarar
-    ##  Bulunan domainlerin verilerini çeker
+    ##  Bulunan domainlerin verilerini ceker
     ##
     #######
 
@@ -25,7 +25,7 @@ class Cpanel:
     ######
     ##
     ##  Domainlerin kota ve trafik bilgilerini
-    ##  Döndürür
+    ##  verir
     ##
     #######
     def getDomainInfo(self,sites):
@@ -45,7 +45,7 @@ class Cpanel:
 
             if (quota == False):
                 quota = {'space': '0', 'limit': '0'}
-
+            print(siteList)
             siteList.append({'domain': site[:pos], 'username': username, 'bandwidth': bandwidth, 'quota': quota})
 
         return siteList
@@ -53,8 +53,8 @@ class Cpanel:
 
     ######
     ##
-    ##  Gönderilen Cpanel Kullanıcısının
-    ##  Trafik Bilgisini Döndürür
+    ##  Gonderilen Cpanel kullanicisinin
+    ##  Trafik Bilgisini verir
     ##
     #######
 
@@ -82,8 +82,8 @@ class Cpanel:
 
     ######
     ##
-    ##  Gönderilen Cpanel Kullanıcısının
-    ##  Kota bilgisini döndürür
+    ##  Gonderilen Cpanel Kullanicisinin
+    ##  Kota bilgisini dondurur
     ##
     #######
 
@@ -114,8 +114,8 @@ class Cpanel:
 
     ######
     ##
-    ##  Her hesabın gönderdiği mail sayıları
-    ##  username : count formatında tutar
+    ##  Her hesabin gonderdigi mail sayilari
+    ##  username : count formatinda tutar
     ##
     #######
 
