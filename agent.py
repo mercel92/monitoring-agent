@@ -32,12 +32,12 @@ except ImportError:
 from modules.service import Service
 
 sock    = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-running = True
+Running = True
 timeout = 5
 
 def main():
 
-    global timeout,running,sock
+    global timeout,Running,sock
 
     service     = Service(psutil)
     mainServer  = service.getMainServerIp()
@@ -55,7 +55,7 @@ def main():
 
     hour = False
 
-    while running:
+    while Running:
 
         obj = {'name' : 'system_info' , 'args' : [ {'data' : {}}]}
         obj['args'] = service.load()
