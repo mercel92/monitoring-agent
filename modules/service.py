@@ -49,7 +49,8 @@ class Service:
         currentHour = datetime.datetime.now().hour
         if(self.hour == False or currentHour != self.hour):
             self.hour = currentHour
-            domainInfo = Cpanel.getCpanelInfo()
+            cpanel = Cpanel()
+            domainInfo = cpanel.getCpanelInfo()
             print(domainInfo)
             self.all.append({'data' : domainInfo})
 
