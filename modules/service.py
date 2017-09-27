@@ -1,4 +1,4 @@
-import os,sys,platform
+import os,sys,platform,datetime
 import socket
 import subprocess
 from subprocess import PIPE, Popen
@@ -8,11 +8,14 @@ from modules.cpu import Cpu
 from modules.io import IO
 from modules.server import Server
 from modules.network import Network
+from modules.cpanel import Cpanel
 
 class Service:
 
     ps = {}
     data = {}
+    all  = []
+    hour = False
 
     def __init__(self,ps):
         self.ps = ps
@@ -25,6 +28,7 @@ class Service:
         self.loadServerInfo()
         self.loadNetworkStats()
         self.loadServiceStatus()
+
         self.data['LoadAvg'] = os.getloadavg()
 
         self.data['Cpanel'] = { 'Version' : self.shellexec(['cat', '/usr/local/cpanel/version'], False)}
@@ -40,7 +44,15 @@ class Service:
 
         self.data['Php'] = {'Version' :phpVersion}
 
-        return self.data
+        self.all = [{ 'data' : self.data}]
+        # once a hour  test
+        currentHour = datetime.datetime.now().hour
+        if(self.hour == False or currentHour != self.hour):
+            self.hour = currentHour
+            domainInfo = Cpanel.getCpanelInfo()
+            self.all.append({'data' : domainInfo})
+
+        return self.all
 
 
     def loadMemory(self):

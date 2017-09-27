@@ -89,15 +89,28 @@ class Cpanel:
 
     def getQuotaInfoFromDomain(self,user):
 
-        result = subprocess.Popen("quota -u " + user + " | grep -Eo '[0-9]{6,10}'", shell=True,stdout=subprocess.PIPE).stdout.readlines()
+        data = self.getQuotaInfo(user)
+        if(data == False):
+            return False
+        else:
+            obj = { 'quota': {}, 'inode': {}}
+            obj['quota']['used'] = data[0]
+            obj['quota']['soft'] = data[1]
+            obj['quota']['hard'] = data[2]
+            obj['inode']['used'] = data[3]
+            obj['inode']['soft'] = data[4]
+            obj['inode']['hard'] = data[5]
+            return obj
 
-        response = {}
-        if (len(result) > 0):
-            response['space'] = result[0].replace('\n', '')
-            response['total'] = result[1].replace('\n', '')
+    def getQuotaInfo(self,user):
 
-            return response
-        return False
+        try:
+            out = subprocess.check_output(['quota', '-u', user])
+            lines = out.splitlines()
+            data = lines[3].split()
+            return data
+        except:
+            return False
 
     ######
     ##

@@ -14,7 +14,7 @@
 '''
 
 import socket,signal
-import time,datetime
+import time
 import json
 
 try:
@@ -58,13 +58,7 @@ def main():
     while running:
 
         obj = {'name' : 'system_info' , 'args' : [ {'data' : {}}]}
-        obj['args'][0]['data'] = service.load()
-
-        # once a hour  test
-        currentHour = datetime.datetime.now().hour
-        if(hour == False or currentHour != hour):
-            hour = currentHour
-            #obj['args'].append({'data': getCpanelInfo()})
+        obj['args'] = service.load()
 
         message = json.dumps(obj)
         try:
