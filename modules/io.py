@@ -31,8 +31,23 @@ class IO:
             disc['Free']    = usage.free
             disc['Used']    = usage.used
             disc['Percent'] = usage.percent
+            disc['Inode']   = self.getInode(part.device)
 
             self.sections.append(disc)
+
+    def getInode(self,path):
+
+        df_out = [s.split() for s in os.popen('/bin/df -khi -P '+path).read().splitlines()]
+        data = df_out[1:][0]
+        inode = {}
+        inode['Filesystem'] = data[0]
+        inode['Inodes']     = data[1]
+        inode['IUsed']      = data[2]
+        inode['IFree']      = data[3]
+        inode['IUse']       = data[4]
+        inode['Mounted']    = data[5]
+
+        return inode
 
 
     def getDiscs(self):
