@@ -29,6 +29,7 @@ class Service:
         self.loadNetworkStats()
         self.loadServiceStatus()
         self.loadMailData()
+        self.loadTasks()
 
         self.data['LoadAvg'] = os.getloadavg()
 
@@ -60,6 +61,29 @@ class Service:
             self.all.append({'data' : domainInfo})
 
         return self.all
+
+    def loadTasks(self):
+
+        self.data['Tasks'] = {
+            'task_total' : 0,
+            'task_running' : 0 ,
+            'task_sleeping' : 0,
+            'task_stopped' :0,
+            'task_zombie' : 0
+        }
+
+        output = self.shellexec('top - b - n 1 - d 0 | grep Tasks:', True)
+
+        if output != '' :
+            k = [int(s) for s in output if s.isdigit()]
+            self.data['Tasks']['task_total']    = k[0]
+            self.data['Tasks']['task_running']  = k[1]
+            self.data['Tasks']['task_sleeping'] = k[2]
+            self.data['Tasks']['task_stopeed']  = k[3]
+            self.data['Tasks']['task_zombie']   = k[4]
+
+
+        return
 
     def loadMailData(self):
 
