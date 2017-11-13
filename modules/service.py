@@ -28,10 +28,12 @@ class Service:
         self.loadServerInfo()
         self.loadNetworkStats()
         self.loadServiceStatus()
+        self.loadMailData()
 
         self.data['LoadAvg'] = os.getloadavg()
 
         self.data['Cpanel'] = { 'Version' : self.shellexec(['cat', '/usr/local/cpanel/version'], False)}
+
         self.data['LiteSpeed'] = {
             "Version": self.shellexec(['cat', '/usr/local/lsws/VERSION'], False),
             "Serial": self.shellexec(['cat', '/usr/local/lsws/conf/serial.no'], False),
@@ -59,6 +61,23 @@ class Service:
 
         return self.all
 
+    def loadMailData(self):
+
+        self.data['Email'] = {
+            'QueueCount': 0,
+            'QueueArray': [],
+        }
+
+        output = self.shellexec('exim -bp | exiqsumm',True)
+        if output != '':
+            arr = output.split()
+            y = [s for s in arr if '--' not in s]
+            f = lambda arr, n=5: [arr[i:i + n] for i in range(0, len(arr), n)]
+            arr = f(y)
+            self.data['Email']['QueueCount']  = arr[-1][0]
+            self.data['Email']['QueueArray']  = arr
+
+        return
 
     def loadMemory(self):
 
