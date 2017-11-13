@@ -38,6 +38,10 @@ class Service:
             "Expdate": self.shellexec('/usr/local/lsws/bin/lshttpd -V | grep -m 1 "Leased"', True)
         }
 
+        self.data['Services']['LiteSpeed'] = False;
+        if self.data['LiteSpeed']['Version'] != '' :
+            self.data['Services']['LiteSpeed'] = self.scanport(7080)
+
         phpVersion  = (subprocess.Popen("php -v", shell=True, stdout=subprocess.PIPE).stdout.read()[:30])
         if self.isV3() == True:
             phpVersion = phpVersion.decode('utf-8')
