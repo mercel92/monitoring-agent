@@ -72,14 +72,14 @@ class Service:
             'task_zombie' : 0
         }
 
-        output = self.shellexec('top - b - n 1 - d 0 | grep Tasks:', True)
+        output = self.shellexec('top - b - n 1 - d 0 | grep Tasks:', False)
 
         if output != '' :
             k = [int(s) for s in output if s.isdigit()]
             self.data['Tasks']['task_total']    = k[0]
             self.data['Tasks']['task_running']  = k[1]
             self.data['Tasks']['task_sleeping'] = k[2]
-            self.data['Tasks']['task_stopeed']  = k[3]
+            self.data['Tasks']['task_stopped']  = k[3]
             self.data['Tasks']['task_zombie']   = k[4]
 
 
