@@ -43,7 +43,7 @@ def main():
 
     global timeout,Running,sock
 
-    updateCheckerStart = 0
+    updateCheckerStart = 5
     updateCheckerTimer = 60
     service     = Service(psutil)
     mainServer  = service.getMainServerIp()
