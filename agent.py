@@ -64,9 +64,12 @@ def main():
     while Running:
 
         if (updateCheckerStart*timeout) % updateCheckerTimer == 0 :
+            print('Checking Update Status')
+
             updaterStatus = updateChecker()
             if updaterStatus == False :
                 subprocess.call('python /usr/src/tagent/update.py',shell=True)
+                print(' Update.py is executing')
 
         updateCheckerStart = updateCheckerStart + 1
 
