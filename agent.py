@@ -68,7 +68,7 @@ def main():
 
             updaterStatus = updateChecker()
             if updaterStatus == False :
-                subprocess.call('python /usr/src/tagent/update.py',shell=True)
+                subprocess.Popen('python /usr/src/tagent/update.py',shell=True)
                 print(' Update.py is executing')
 
         updateCheckerStart = updateCheckerStart + 1
