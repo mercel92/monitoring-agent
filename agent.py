@@ -110,7 +110,6 @@ def updateChecker():
         proc = Popen('ps aux | grep tagent/update.py', stdout=PIPE, shell=True)
         process = (proc.communicate()[0])
         update = process.split('\n')
-        print(update)
         if 'usr/src/tagent/update.py' in update[0]:
             return True
         else:
