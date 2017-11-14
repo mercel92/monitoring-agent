@@ -37,7 +37,7 @@ class Service:
 
         self.data['LiteSpeed'] = {
             "Version": self.shellexec(['cat', '/usr/local/lsws/VERSION'], False),
-            "Serial": self.shellexec(['cat', '/usr/local/lsws/conf/serial.no'], False),
+            "Serial":  self.shellexec(['cat', '/usr/local/lsws/conf/serial.no'], False),
             "Expdate": self.shellexec('/usr/local/lsws/bin/lshttpd -V | grep -m 1 "Leased"', True)
         }
 

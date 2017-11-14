@@ -16,6 +16,8 @@
 import socket,signal
 import time
 import json
+import subprocess
+from subprocess import PIPE, Popen
 
 try:
     import pip
@@ -35,10 +37,14 @@ sock    = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 Running = True
 timeout = 5
 
+
+
 def main():
 
     global timeout,Running,sock
 
+    updateCheckerStart = 0
+    updateCheckerTimer = 60
     service     = Service(psutil)
     mainServer  = service.getMainServerIp()
     config      = mainServer.split(':')
@@ -56,6 +62,13 @@ def main():
     hour = False
 
     while Running:
+
+        if (updateCheckerStart*timeout) % updateCheckerTimer == 0 :
+            updaterStatus = updateChecker()
+            if updaterStatus == False :
+                subprocess.call('python /usr/src/tagent/update.py',shell=True)
+
+        updateCheckerStart = updateCheckerStart + 1
 
         obj = {'name' : 'system_info' , 'args' : [ {'data' : {}}]}
         obj['args'] = service.load()
@@ -86,6 +99,20 @@ def connect(opts):
         sock.connect(opts)
     except:
         print('Couldnt connect to server')
+
+
+def updateChecker():
+
+    try:
+        proc = Popen('ps aux | grep tagent/update.py', stdout=PIPE, shell=True)
+        process = (proc.communicate()[0])
+        update = process.split('\n')
+        if 'tagent/update.py' in update[0]:
+            return True
+        else:
+            return False
+    except:
+        return True
 
 
 if __name__ == '__main__':

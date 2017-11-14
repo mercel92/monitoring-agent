@@ -11,16 +11,21 @@ except ImportError:
     import requests
 
 def executeScript():
+
     global TriggerFile
-    print(TriggerFile)
-    subprocess.call([TriggerFile])
-    print('worked')
+    try:
+        subprocess.call([TriggerFile])
+        print('Worked trigger')
+    except:
+        print('Not work trigger')
+
 
 def checkService() :
+
     global ServiceAddress
     Hostname = platform.uname()[1]
-    r = requests.get(ServiceAddress+Hostname)
     try:
+        r = requests.get(ServiceAddress+Hostname)
         k = json.loads(r.text)
         if len(k) > 0 and k[0]["update"] == True :
             return True
