@@ -96,7 +96,7 @@ class Service:
         output = self.shellexec('exim -bp | exiqsumm',True)
         if output != '':
             arr = output.split()
-            y = [s for s in arr if '--' not in s]
+            y = [s for s in arr if '---' not in s]
             f = lambda arr, n=5: [arr[i:i + n] for i in range(0, len(arr), n)]
             arr = f(y)
             self.data['Email']['QueueCount']  = arr[-1][0]
