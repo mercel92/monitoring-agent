@@ -40,7 +40,7 @@ class Cpanel:
             bandwidth   = self.getBandwithFromDomain(username)
             quota       = self.getQuotaInfoFromDomain(username)
 
-            if (bandwidth == False):
+            if (bandwidth == False or bandwidth == None):
                 bandwidth = -1;
 
             if (quota == False):
