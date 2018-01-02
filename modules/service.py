@@ -154,7 +154,11 @@ class Service:
 
         self.data['Services'] = {}
         self.data['Services']['Http'] = self.scanport(80)
+        self.data['Services']['Https']  = self.scanport(443)
+        self.data['Services']['Mysql']  = self.scanport(3306)
+        self.data['Services']['Litespeed']  = self.scanport(7080)
         self.data['Services']['Ssh']  = self.scanport(4646)
+
         return
 
 
