@@ -59,25 +59,30 @@ class Cpanel:
 
     def getBandwithFromDomain(self,user):
 
-        now = datetime.datetime.now()
-        monthRanges = calendar.monthrange(now.year, now.month)
-        s1 = str(monthRanges[0]) + '/' + str(now.month) + '/' + str(now.year)
-        timestamp = time.mktime(datetime.datetime.strptime(s1, "%d/%m/%Y").timetuple())
+        try:
 
-        bandwidth = 0
-        file = '/var/cpanel/bandwidth/' + user + '.sqlite'
-        if (os.path.exists(file) == False):
+            now = datetime.datetime.now()
+            monthRanges = calendar.monthrange(now.year, now.month)
+            s1 = '1 /' + str(now.month) + '/' + str(now.year)
+            timestamp = time.mktime(datetime.datetime.strptime(s1, "%d/%m/%Y").timetuple())
+
+            bandwidth = 0
+            file = '/var/cpanel/bandwidth/' + user + '.sqlite'
+            if (os.path.exists(file) == False):
+                return False
+
+            conn = sqlite3.connect(file)
+            c = conn.cursor()
+
+            sqlQuery = 'SELECT SUM(bytes) AS sum  FROM \'bandwidth_5min\' WHERE unixtime >' + str(timestamp)
+            c.execute(sqlQuery)
+            bandwidth = c.fetchone()[0]
+            conn.close()
+
+            return bandwidth;
+
+        except:
             return False
-
-        conn = sqlite3.connect(file)
-        c = conn.cursor()
-
-        sqlQuery = 'SELECT SUM(bytes) AS sum  FROM \'bandwidth_5min\' WHERE unixtime >' + str(timestamp)
-        c.execute(sqlQuery)
-        bandwidth = c.fetchone()[0]
-        conn.close()
-
-        return bandwidth;
 
     ######
     ##
