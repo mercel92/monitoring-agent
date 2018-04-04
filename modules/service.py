@@ -99,7 +99,7 @@ class Service:
             y = [s for s in arr if '---' not in s]
             f = lambda arr, n=5: [arr[i:i + n] for i in range(0, len(arr), n)]
             arr = f(y)
-            self.data['Email']['QueueCount']  = arr[-1][0]
+            self.data['Email']['QueueCount']  = self.shellexec('/usr/sbin/exim -bpc',True)
             self.data['Email']['QueueArray']  = arr
 
         return
