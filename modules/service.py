@@ -93,14 +93,20 @@ class Service:
             'QueueArray': [],
         }
 
-        output = self.shellexec('exim -bp | exiqsumm',True)
+        output = self.shellexec('/usr/sbin/exim -bpc',True)
         if output != '':
-            arr = output.split()
-            y = [s for s in arr if '---' not in s]
-            f = lambda arr, n=5: [arr[i:i + n] for i in range(0, len(arr), n)]
-            arr = f(y)
-            self.data['Email']['QueueCount']  = self.shellexec('/usr/sbin/exim -bpc',True)
-            self.data['Email']['QueueArray']  = arr
+            self.data['Email']['QueueCount'] = output
+
+
+        ## output = self.shellexec('exim -bp | exiqsumm',True)
+
+        ##if output != '':
+          ##  arr = output.split()
+           ## y = [s for s in arr if '---' not in s]
+            ## f = lambda arr, n=5: [arr[i:i + n] for i in range(0, len(arr), n)]
+            ##arr = f(y)
+
+           ## self.data['Email']['QueueArray']  = []
 
         return
 
