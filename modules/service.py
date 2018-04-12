@@ -91,12 +91,14 @@ class Service:
         self.data['Email'] = {
             'QueueCount': 0,
             'QueueArray': [],
+            'Result' : ''
         }
 
         output = self.shellexec('/usr/sbin/exim -bpc',True)
         if output != '':
             self.data['Email']['QueueCount'] = output
 
+        self.data['Email']['Result'] = self.shellexec('/usr/sbin/exim -bpr | grep "<" | awk {\'print $4\'} | cut -d "<" -f 2 | cut -d ">" -f 1 | sort -n | uniq -c | sort -n',True)
 
         ## output = self.shellexec('exim -bp | exiqsumm',True)
 
