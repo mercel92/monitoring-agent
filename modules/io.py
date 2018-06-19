@@ -19,10 +19,13 @@ class IO:
             usage = psutil.disk_usage(part.mountpoint)
 
             if len(part.mountpoint) > 25:
-                break
+                continue
 
             if part.mountpoint.find("home/virtfs") != -1:
-                break
+                continue
+
+            if part.mountpoint == '/boot/efi' :
+                continue
 
             disc = {}
             disc['Device']  = part.device

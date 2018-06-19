@@ -100,16 +100,6 @@ class Service:
 
         self.data['Email']['Result'] = self.shellexec('/usr/sbin/exim -bpr | grep "<" | awk {\'print $4\'} | cut -d "<" -f 2 | cut -d ">" -f 1 | sort -n | uniq -c | sort -n',True)
 
-        ## output = self.shellexec('exim -bp | exiqsumm',True)
-
-        ##if output != '':
-          ##  arr = output.split()
-           ## y = [s for s in arr if '---' not in s]
-            ## f = lambda arr, n=5: [arr[i:i + n] for i in range(0, len(arr), n)]
-            ##arr = f(y)
-
-           ## self.data['Email']['QueueArray']  = []
-
         return
 
     def loadMemory(self):
