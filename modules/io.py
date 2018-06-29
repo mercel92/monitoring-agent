@@ -16,27 +16,30 @@ class IO:
                 if 'cdrom' in part.opts or part.fstype == '':
                     continue
 
-            usage = psutil.disk_usage(part.mountpoint)
+            try :
+                usage = psutil.disk_usage(part.mountpoint)
 
-            if len(part.mountpoint) > 25:
+                if len(part.mountpoint) > 25:
+                    continue
+
+                if part.mountpoint.find("home/virtfs") != -1:
+                    continue
+
+                if part.mountpoint == '/boot/efi' :
+                    continue
+
+                disc = {}
+                disc['Device']  = part.device
+                disc['Mount']   = part.mountpoint
+                disc['Total']   = usage.total
+                disc['Free']    = usage.free
+                disc['Used']    = usage.used
+                disc['Percent'] = usage.percent
+                disc['Inode']   = self.getInode(part.device)
+
+                self.sections.append(disc)
+            except :
                 continue
-
-            if part.mountpoint.find("home/virtfs") != -1:
-                continue
-
-            if part.mountpoint == '/boot/efi' :
-                continue
-
-            disc = {}
-            disc['Device']  = part.device
-            disc['Mount']   = part.mountpoint
-            disc['Total']   = usage.total
-            disc['Free']    = usage.free
-            disc['Used']    = usage.used
-            disc['Percent'] = usage.percent
-            disc['Inode']   = self.getInode(part.device)
-
-            self.sections.append(disc)
 
     def getInode(self,path):
 
