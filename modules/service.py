@@ -52,8 +52,7 @@ class Service:
             phpVersion = phpVersion.decode('utf-8')
             phpTimezone = phpTimezone.decode('utf-8')
 
-        self.data['PhpTimezone'] = {'Version' :phpTimezone}
-        self.data['Php'] = {'Version': phpVersion}
+        self.data['Php'] = {'Version': phpVersion , 'TimeZone' : phpTimezone}
 
         self.all = [{ 'data' : self.data}]
         # once a hour  test
