@@ -46,10 +46,14 @@ class Service:
             self.data['Services']['LiteSpeed'] = self.scanport(7080)
 
         phpVersion  = (subprocess.Popen("php -v", shell=True, stdout=subprocess.PIPE).stdout.read()[:30])
+        phpTimezone = (subprocess.Popen('php --run "echo timezone_version_get();"', shell=True, stdout=subprocess.PIPE).stdout.read()[:30])
+
         if self.isV3() == True:
             phpVersion = phpVersion.decode('utf-8')
+            phpTimezone = phpTimezone.decode('utf-8')
 
-        self.data['Php'] = {'Version' :phpVersion}
+        self.data['PhpTimezone'] = {'Version' :phpTimezone}
+        self.data['Php'] = {'Version': phpVersion}
 
         self.all = [{ 'data' : self.data}]
         # once a hour  test
