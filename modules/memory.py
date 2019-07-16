@@ -35,6 +35,22 @@ class Memory:
     def get(self):
         return self.__dict__.values()
 
+    def getMemcacheMemory(self):
+
+        pid = -1;
+        for proc in psutil.process_iter():
+            if proc.name == 'memcached':
+                pid = proc.pid;
+                break
+
+        if pid == -1 :
+            return -1;
+
+        process = psutil.Process(pid)
+        mem = process.memory_percent()
+        return mem;
+
+
     def __str__(self):
         return 'This object can not be convertable'
 
