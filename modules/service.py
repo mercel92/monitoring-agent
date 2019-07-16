@@ -110,6 +110,7 @@ class Service:
         memory = Memory()
         self.data['Memory'] = memory.getMemory()
         self.data['Swap'] = memory.getSwap()
+        self.data['App'] = {}
         self.data['App']['Memcached'] = memory.getMemcacheMemory()
         return
 
