@@ -39,7 +39,7 @@ class Memory:
 
         pid = -1;
         for proc in psutil.process_iter():
-            if proc.name == 'memcached':
+            if proc.name() == 'memcached':
                 pid = proc.pid;
                 break
 
