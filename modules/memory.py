@@ -37,18 +37,21 @@ class Memory:
 
     def getMemcacheMemory(self):
 
-        pid = -1;
-        for proc in psutil.process_iter():
-            if proc.name() == 'memcached':
-                pid = proc.pid;
-                break
+        try:
+            pid = -1;
+            for proc in psutil.process_iter():
+                if proc.name() == 'memcached':
+                    pid = proc.pid;
+                    break
 
-        if pid == -1 :
+            if pid == -1 :
+                return -1;
+
+            process = psutil.Process(pid)
+            mem = process.memory_percent()
+            return mem;
+        except:
             return -1;
-
-        process = psutil.Process(pid)
-        mem = process.memory_percent()
-        return mem;
 
 
     def __str__(self):
