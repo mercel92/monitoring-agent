@@ -16,6 +16,7 @@ class Service:
     data = {}
     all  = []
     hour = False
+    min  =
 
     def __init__(self,ps):
         self.ps = ps
@@ -55,6 +56,7 @@ class Service:
         self.data['Php'] = {'Version': phpVersion , 'TimeZone' : phpTimezone}
 
         self.all = [{ 'data' : self.data}]
+
         # once a hour  test
         currentHour = datetime.datetime.now().hour
         if(self.hour == False or currentHour != self.hour):
@@ -62,6 +64,9 @@ class Service:
             cpanel = Cpanel()
             domainInfo = cpanel.getCpanelInfo()
             self.all.append({'data' : domainInfo})
+
+        if(datetime.datetime.now().minute % 5 == 0) :
+            self.loadVnStat()
 
         return self.all
 
@@ -183,6 +188,10 @@ class Service:
             return True
         return False
 
+    def loadVnStat(self):
+        self.data['VnStat'] = self.shellexec('vnstat -d  --json')
+
+        return
     def isV3(self):
 
         req_version = (2, 8)
