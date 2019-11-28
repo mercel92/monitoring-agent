@@ -188,7 +188,7 @@ class Service:
         return False
 
     def loadVnStat(self):
-        self.data['VnStat'] = self.shellexec('vnstat -d  --json')
+        self.data['VnStat'] = self.shellexec('vnstat -d  --json',True)
 
         return
     def isV3(self):
