@@ -16,7 +16,6 @@ class Service:
     data = {}
     all  = []
     hour = False
-    min  =
 
     def __init__(self,ps):
         self.ps = ps
