@@ -64,8 +64,8 @@ class Service:
             domainInfo = cpanel.getCpanelInfo()
             self.all.append({'data' : domainInfo})
 
-        if(datetime.datetime.now().minute % 5 == 0) :
-            self.loadVnStat()
+       # if(datetime.datetime.now().minute % 5 == 0) :
+        #    self.loadVnStat()
 
         return self.all
 
